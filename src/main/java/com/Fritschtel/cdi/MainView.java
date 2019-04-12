@@ -1,7 +1,6 @@
 package com.Fritschtel.cdi;
 
 import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Label;
@@ -9,7 +8,6 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
 
@@ -28,8 +26,7 @@ public class MainView extends VerticalLayout {
     double result = 0;
     String x = "";
     String y = "";
-    int operator = 0;
-    Label lblResult = new Label("0");
+    Label lblResult = new Label("");
 
     public MainView() {
         setSizeUndefined();
@@ -93,102 +90,161 @@ public class MainView extends VerticalLayout {
         row5.setPadding(false);
         row5.setMargin(true);
         row5.setSpacing(true);
-
     }
+
+    public enum calculation {
+        addition, subtraktion, multiplikation, division, nothing
+    }
+
+    calculation operator = calculation.nothing;
 
     private void clickBtnClear(ClickEvent<Button> event) {
         x = "";
-    }
-    
-    private void clickBtnDelete(ClickEvent<Button> event) {
-        Notification.show(x);
-        Notification.show(y);
-    }
-    
-    private void clickBtn1(ClickEvent<Button> event) {
-        x = x + "1";
-    } 
-    
-    private void clickBtn2(ClickEvent<Button> event) {
-        x = x + "2";
-    }
-    
-    private void clickBtn3(ClickEvent<Button> event) {
-        x = x + "3";
-    }
-    
-    private void clickBtn4(ClickEvent<Button> event) {
-        x = x + "4";
-    }
-    
-    private void clickBtn5(ClickEvent<Button> event) {
-        x = x + "5";
-    }
-    
-    private void clickBtn6(ClickEvent<Button> event) {
-        x = x + "6";
-    }
-    
-    private void clickBtn7(ClickEvent<Button> event) {
-        x = x + "7";
-    }
-    
-    private void clickBtn8(ClickEvent<Button> event) {
-        x = x + "8";
-    }
-    
-    private void clickBtn9(ClickEvent<Button> event) {
-        x = x + "9";
-    }
-    
-    private void clickBtn0(ClickEvent<Button> event) {
-        x = x + "0";
-    }
-    
-    private void clickBtnNegative(ClickEvent<Button> event) {
-        x = x + "-";
-    }
-    
-    private void clickBtnComma(ClickEvent<Button> event) {
-        x = x + ".";
-    }
-    
-    private void clickBtnPlus(ClickEvent<Button> event) {
-        y = x;
-        x = "";
-        operator = 1;
-    }
-    
-    private void clickBtnMinus(ClickEvent<Button> event) {
-        y = x;
-        x = "";
-        operator = 2;
-    }
-    
-    private void clickBtnTimes(ClickEvent<Button> event) {
-        y = x;
-        x = "";
-        operator = 3;
-    }
-    
-    private void clickBtnThrough(ClickEvent<Button> event) {
-        y = x;
-        x = "";
-        operator = 4;
-    }
-    
-    private void clickBtnEqual(ClickEvent<Button> event) {
-        if (operator==1) {
-            result = Double.parseDouble(y) + Double.parseDouble(x);
-            } else if (operator==2) {
-                result = Double.parseDouble(y) - Double.parseDouble(x); 
-                } else if (operator==3) {
-                    result = Double.parseDouble(y) * Double.parseDouble(x);
-                    } else if (operator==4) {
-                        result = Double.parseDouble(y) / Double.parseDouble(x);
-                        }
-        lblResult.setText(""+result);
-        }
-        
+        y = "";
+        lblResult.setText("");
     }
 
+    private void clickBtnDelete(ClickEvent<Button> event) {
+        x = x.substring(0, x.length() - 1);
+
+        if (y == "") {
+            lblResult.setText(x);
+        } else {
+            switch (operator) {
+
+                case addition:
+                    lblResult.setText(y + "+" + x);
+                    break;
+
+                case subtraktion:
+                    lblResult.setText(y + "-" + x);
+                    break;
+
+                case multiplikation:
+                    lblResult.setText(y + "x" + x);
+                    break;
+
+                case division:
+                    lblResult.setText(y + "/" + x);
+                    break;
+            }
+        }
+        //Notification.show(x);
+        //Notification.show(y);
+    }
+
+    private void clickBtn1(ClickEvent<Button> event) {
+        x = x + "1";
+        lblResult.setText(lblResult.getText() + "1");
+    }
+
+    private void clickBtn2(ClickEvent<Button> event) {
+        x = x + "2";
+        lblResult.setText(lblResult.getText() + "2");
+    }
+
+    private void clickBtn3(ClickEvent<Button> event) {
+        x = x + "3";
+        lblResult.setText(lblResult.getText() + "3");
+    }
+
+    private void clickBtn4(ClickEvent<Button> event) {
+        x = x + "4";
+        lblResult.setText(lblResult.getText() + "4");
+    }
+
+    private void clickBtn5(ClickEvent<Button> event) {
+        x = x + "5";
+        lblResult.setText(lblResult.getText() + "5");
+    }
+
+    private void clickBtn6(ClickEvent<Button> event) {
+        x = x + "6";
+        lblResult.setText(lblResult.getText() + "6");
+    }
+
+    private void clickBtn7(ClickEvent<Button> event) {
+        x = x + "7";
+        lblResult.setText(lblResult.getText() + "7");
+    }
+
+    private void clickBtn8(ClickEvent<Button> event) {
+        x = x + "8";
+        lblResult.setText(lblResult.getText() + "8");
+    }
+
+    private void clickBtn9(ClickEvent<Button> event) {
+        x = x + "9";
+        lblResult.setText(lblResult.getText() + "9");
+    }
+
+    private void clickBtn0(ClickEvent<Button> event) {
+        x = x + "0";
+        lblResult.setText(lblResult.getText() + "0");
+    }
+
+    private void clickBtnNegative(ClickEvent<Button> event) {
+        x = x + "-";
+        lblResult.setText(lblResult.getText() + "-");
+    }
+
+    private void clickBtnComma(ClickEvent<Button> event) {
+        x = x + ".";
+        lblResult.setText(lblResult.getText() + ",");
+    }
+
+    public void clickBtnPlus(ClickEvent<Button> event) {
+        y = x;
+        x = "";
+        lblResult.setText(lblResult.getText() + "+");
+        operator = calculation.addition;
+    }
+
+    public void clickBtnMinus(ClickEvent<Button> event) {
+        y = x;
+        x = "";
+        lblResult.setText(lblResult.getText() + "-");
+        operator = calculation.subtraktion;
+    }
+
+    public void clickBtnTimes(ClickEvent<Button> event) {
+        y = x;
+        x = "";
+        lblResult.setText(lblResult.getText() + "x");
+        operator = calculation.multiplikation;
+    }
+
+    public void clickBtnThrough(ClickEvent<Button> event) {
+        y = x;
+        x = "";
+        lblResult.setText(lblResult.getText() + "/");
+        operator = calculation.division;
+    }
+
+    private void clickBtnEqual(ClickEvent<Button> event) {
+        switch (operator) {
+            case nothing:
+                Notification.show("Kein Operator ausgewählt!");
+                break;
+
+            case addition:
+                result = Double.parseDouble(y) + Double.parseDouble(x);
+                break;
+
+            case subtraktion:
+                result = Double.parseDouble(y) - Double.parseDouble(x);
+                break;
+
+            case multiplikation:
+                result = Double.parseDouble(y) * Double.parseDouble(x);
+                break;
+
+            case division:
+                result = Double.parseDouble(y) / Double.parseDouble(x);
+                break;
+        }
+        lblResult.setText("" + result);
+
+    }
+
+}
