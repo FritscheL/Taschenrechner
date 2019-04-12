@@ -93,10 +93,10 @@ public class MainView extends VerticalLayout {
     }
 
     public enum calculation {
-        addition, subtraktion, multiplikation, division, nothing
+        ADD, SUB, MULTI, DIV, NO
     }
 
-    calculation operator = calculation.nothing;
+    calculation operator = calculation.NO;
 
     private void clickBtnClear(ClickEvent<Button> event) {
         x = "";
@@ -112,19 +112,19 @@ public class MainView extends VerticalLayout {
         } else {
             switch (operator) {
 
-                case addition:
+                case ADD:
                     lblResult.setText(y + "+" + x);
                     break;
 
-                case subtraktion:
+                case SUB:
                     lblResult.setText(y + "-" + x);
                     break;
 
-                case multiplikation:
+                case MULTI:
                     lblResult.setText(y + "x" + x);
                     break;
 
-                case division:
+                case DIV:
                     lblResult.setText(y + "/" + x);
                     break;
             }
@@ -197,49 +197,49 @@ public class MainView extends VerticalLayout {
         y = x;
         x = "";
         lblResult.setText(lblResult.getText() + "+");
-        operator = calculation.addition;
+        operator = calculation.ADD;
     }
 
     public void clickBtnMinus(ClickEvent<Button> event) {
         y = x;
         x = "";
         lblResult.setText(lblResult.getText() + "-");
-        operator = calculation.subtraktion;
+        operator = calculation.SUB;
     }
 
     public void clickBtnTimes(ClickEvent<Button> event) {
         y = x;
         x = "";
         lblResult.setText(lblResult.getText() + "x");
-        operator = calculation.multiplikation;
+        operator = calculation.MULTI;
     }
 
     public void clickBtnThrough(ClickEvent<Button> event) {
         y = x;
         x = "";
         lblResult.setText(lblResult.getText() + "/");
-        operator = calculation.division;
+        operator = calculation.DIV;
     }
 
     private void clickBtnEqual(ClickEvent<Button> event) {
         switch (operator) {
-            case nothing:
+            case NO:
                 Notification.show("Kein Operator ausgewählt!");
                 break;
 
-            case addition:
+            case ADD:
                 result = Double.parseDouble(y) + Double.parseDouble(x);
                 break;
 
-            case subtraktion:
+            case SUB:
                 result = Double.parseDouble(y) - Double.parseDouble(x);
                 break;
 
-            case multiplikation:
+            case MULTI:
                 result = Double.parseDouble(y) * Double.parseDouble(x);
                 break;
 
-            case division:
+            case DIV:
                 result = Double.parseDouble(y) / Double.parseDouble(x);
                 break;
         }
