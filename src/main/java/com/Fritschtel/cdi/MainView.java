@@ -27,7 +27,7 @@ import javax.inject.Inject;
 public class MainView extends VerticalLayout {
 
     @Inject
-    private MessageBean messageBean;
+    private CalculationService calculationService;
 
     private Operator operator;
 
@@ -120,11 +120,7 @@ public class MainView extends VerticalLayout {
     }
 
     private void updateResult() {
-        if (y == "") {
-            lblResult.setText(x);
-        } else {
-            lblResult.setText(y + operator + x);
-        }
+        lblResult.setText(y + operator + x);
     }
 
     private void clickBtn1(ClickEvent<Button> event) {
@@ -218,25 +214,29 @@ public class MainView extends VerticalLayout {
     private void clickBtnEqual(ClickEvent<Button> event) {
         x = x.replace(',', '.');
         y = y.replace(',', '.');
+
+        double an = Double.parseDouble(y);
+        double bn = Double.parseDouble(x);
+
         switch (operator) {
             case NO:
                 Notification.show("Kein Operator ausgewählt!");
                 break;
 
             case ADD:
-                result = Double.parseDouble(y) + Double.parseDouble(x);
+                result = calculationService.add(an, bn);
                 break;
 
             case SUB:
-                result = Double.parseDouble(y) - Double.parseDouble(x);
+                result = calculationService.sub(an, bn);
                 break;
 
             case MULTI:
-                result = Double.parseDouble(y) * Double.parseDouble(x);
+                result = calculationService.multi(an, bn);
                 break;
 
             case DIV:
-                result = Double.parseDouble(y) / Double.parseDouble(x);
+                result = calculationService.div(an, bn);
                 break;
         }
         String finalResult = (Double.toString(result));
