@@ -1,5 +1,6 @@
 package com.Fritschtel.cdi;
 
+import com.Fritschtel.cdi.component.MyHorizontalLayout;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
@@ -23,6 +24,7 @@ public class MainView extends VerticalLayout {
 
     @Inject
     private MessageBean messageBean;
+
     double result = 0;
     String x = "";
     String y = "";
@@ -31,9 +33,8 @@ public class MainView extends VerticalLayout {
     public MainView() {
         setSizeUndefined();
         addClassName("main-view");
-
         add(lblResult);
-        VerticalLayout buttonline = new VerticalLayout();
+        MyVerticalLayout buttonlines = new MyVerticalLayout();
 
         Button btnClear = new Button("C", this::clickBtnClear);
         Button btnDelete = new Button("<--", this::clickBtnDelete);
@@ -55,41 +56,22 @@ public class MainView extends VerticalLayout {
         Button btnThrough = new Button("/", this::clickBtnThrough);
         Button btnEqual = new Button("=", this::clickBtnEqual);
 
-        HorizontalLayout row1 = new HorizontalLayout();
-        HorizontalLayout row2 = new HorizontalLayout();
-        HorizontalLayout row3 = new HorizontalLayout();
-        HorizontalLayout row4 = new HorizontalLayout();
-        HorizontalLayout row5 = new HorizontalLayout();
+        MyHorizontalLayout row1 = new MyHorizontalLayout();
+        MyHorizontalLayout row2 = new MyHorizontalLayout();
+        MyHorizontalLayout row3 = new MyHorizontalLayout();
+        MyHorizontalLayout row4 = new MyHorizontalLayout();
+        MyHorizontalLayout row5 = new MyHorizontalLayout();
 
         row1.setWidth("336px");
         row1.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
 
-        add(buttonline);
-        buttonline.add(row1, row2, row3, row4, row5);
+        add(buttonlines);
+        buttonlines.add(row1, row2, row3, row4, row5);
         row1.add(btnClear, btnDelete, btnThrough);
         row2.add(btn7, btn8, btn9, btnTimes);
         row3.add(btn4, btn5, btn6, btnMinus);
         row4.add(btn1, btn2, btn3, btnPlus);
         row5.add(btnNegative, btn0, btnComma, btnEqual);
-
-        buttonline.setPadding(false);
-        buttonline.setMargin(true);
-        buttonline.setSpacing(true);
-        row1.setPadding(false);
-        row1.setMargin(true);
-        row1.setSpacing(true);
-        row2.setPadding(false);
-        row2.setMargin(true);
-        row2.setSpacing(true);
-        row3.setPadding(false);
-        row3.setMargin(true);
-        row3.setSpacing(true);
-        row4.setPadding(false);
-        row4.setMargin(true);
-        row4.setSpacing(true);
-        row5.setPadding(false);
-        row5.setMargin(true);
-        row5.setSpacing(true);
     }
 
     public enum calculation {
