@@ -1,6 +1,10 @@
 package com.Fritschtel.cdi;
 
+import com.Fritschtel.cdi.component.MyButton;
+import com.Fritschtel.cdi.component.MyVerticalLayout;
 import com.Fritschtel.cdi.component.MyHorizontalLayout;
+import com.Fritschtel.cdi.enums.Operator;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Operators;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
@@ -25,6 +29,8 @@ public class MainView extends VerticalLayout {
     @Inject
     private MessageBean messageBean;
 
+    private Operator operator;
+
     double result = 0;
     String x = "";
     String y = "";
@@ -34,10 +40,14 @@ public class MainView extends VerticalLayout {
         setSizeUndefined();
         addClassName("main-view");
         add(lblResult);
+
+        operator = Operator.NO;
+
         MyVerticalLayout buttonlines = new MyVerticalLayout();
 
         Button btnClear = new Button("C", this::clickBtnClear);
         Button btnDelete = new Button("<--", this::clickBtnDelete);
+//        MyButton btn = new MyButton("sdfg", this::clickBtn1);
         Button btn1 = new Button("1", this::clickBtn1);
         Button btn2 = new Button("2", this::clickBtn2);
         Button btn3 = new Button("3", this::clickBtn3);
@@ -74,12 +84,6 @@ public class MainView extends VerticalLayout {
         row5.add(btnNegative, btn0, btnComma, btnEqual);
     }
 
-    public enum calculation {
-        ADD, SUB, MULTI, DIV, NO
-    }
-
-    calculation operator = calculation.NO;
-
     private void clickBtnClear(ClickEvent<Button> event) {
         x = "";
         y = "";
@@ -115,95 +119,105 @@ public class MainView extends VerticalLayout {
         //Notification.show(y);
     }
 
+    private void updateResult() {
+        if (y == "") {
+            lblResult.setText(x);
+        } else {
+            lblResult.setText(y + operator + x);
+        }
+    }
+
     private void clickBtn1(ClickEvent<Button> event) {
         x = x + "1";
-        lblResult.setText(lblResult.getText() + "1");
+        updateResult();
     }
 
     private void clickBtn2(ClickEvent<Button> event) {
         x = x + "2";
-        lblResult.setText(lblResult.getText() + "2");
+        updateResult();
     }
 
     private void clickBtn3(ClickEvent<Button> event) {
         x = x + "3";
-        lblResult.setText(lblResult.getText() + "3");
+        updateResult();
     }
 
     private void clickBtn4(ClickEvent<Button> event) {
         x = x + "4";
-        lblResult.setText(lblResult.getText() + "4");
+        updateResult();
     }
 
     private void clickBtn5(ClickEvent<Button> event) {
         x = x + "5";
-        lblResult.setText(lblResult.getText() + "5");
+        updateResult();
     }
 
     private void clickBtn6(ClickEvent<Button> event) {
         x = x + "6";
-        lblResult.setText(lblResult.getText() + "6");
+        updateResult();
     }
 
     private void clickBtn7(ClickEvent<Button> event) {
         x = x + "7";
-        lblResult.setText(lblResult.getText() + "7");
+        updateResult();
     }
 
     private void clickBtn8(ClickEvent<Button> event) {
         x = x + "8";
-        lblResult.setText(lblResult.getText() + "8");
+        updateResult();
     }
 
     private void clickBtn9(ClickEvent<Button> event) {
         x = x + "9";
-        lblResult.setText(lblResult.getText() + "9");
+        updateResult();
     }
 
     private void clickBtn0(ClickEvent<Button> event) {
         x = x + "0";
-        lblResult.setText(lblResult.getText() + "0");
+        updateResult();
     }
 
     private void clickBtnNegative(ClickEvent<Button> event) {
         x = x + "-";
-        lblResult.setText(lblResult.getText() + "-");
+        updateResult();
     }
 
     private void clickBtnComma(ClickEvent<Button> event) {
-        x = x + ".";
-        lblResult.setText(lblResult.getText() + ",");
+        x = x + ",";
+        updateResult();
     }
 
     public void clickBtnPlus(ClickEvent<Button> event) {
         y = x;
         x = "";
-        lblResult.setText(lblResult.getText() + "+");
-        operator = calculation.ADD;
+        operator = Operator.ADD;
+        updateResult();
     }
 
     public void clickBtnMinus(ClickEvent<Button> event) {
         y = x;
         x = "";
-        lblResult.setText(lblResult.getText() + "-");
-        operator = calculation.SUB;
+        operator = Operator.SUB;
+        updateResult();
     }
 
     public void clickBtnTimes(ClickEvent<Button> event) {
         y = x;
         x = "";
-        lblResult.setText(lblResult.getText() + "x");
-        operator = calculation.MULTI;
+        operator = Operator.MULTI;
+        updateResult();
     }
 
     public void clickBtnThrough(ClickEvent<Button> event) {
         y = x;
         x = "";
-        lblResult.setText(lblResult.getText() + "/");
-        operator = calculation.DIV;
+        operator = Operator.DIV;
+        updateResult();
     }
 
     private void clickBtnEqual(ClickEvent<Button> event) {
+        x = x.replace(',', '.');
+        y = y.replace(',', '.');
         switch (operator) {
             case NO:
                 Notification.show("Kein Operator ausgewählt!");
@@ -225,7 +239,9 @@ public class MainView extends VerticalLayout {
                 result = Double.parseDouble(y) / Double.parseDouble(x);
                 break;
         }
-        lblResult.setText("" + result);
+        String finalResult = (Double.toString(result));
+        finalResult = finalResult.replace('.', ',');
+        lblResult.setText("" + finalResult);
 
     }
 
