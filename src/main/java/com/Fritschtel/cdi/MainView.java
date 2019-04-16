@@ -82,10 +82,16 @@ public class MainView extends VerticalLayout {
         row4.add(btn1, btn2, btn3, btnPlus);
         row5.add(btnNegative, btn0, btnComma, btnEqual);
     }
+
     private void reset() {
         x = "";
         y = "";
         operator = Operator.NO;
+    }
+
+    private void varChange() {
+        y = x;
+        x = "";
     }
 
     private void clickBtnClear(ClickEvent<Button> event) {
@@ -185,29 +191,25 @@ public class MainView extends VerticalLayout {
     }
 
     public void clickBtnPlus(ClickEvent<Button> event) {
-        y = x;
-        x = "";
+        varChange();
         operator = Operator.ADD;
         updateResult();
     }
 
     public void clickBtnMinus(ClickEvent<Button> event) {
-        y = x;
-        x = "";
+        varChange();
         operator = Operator.SUB;
         updateResult();
     }
 
     public void clickBtnTimes(ClickEvent<Button> event) {
-        y = x;
-        x = "";
+        varChange();
         operator = Operator.MULTI;
         updateResult();
     }
 
     public void clickBtnThrough(ClickEvent<Button> event) {
-        y = x;
-        x = "";
+        varChange();
         operator = Operator.DIV;
         updateResult();
     }
