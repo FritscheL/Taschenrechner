@@ -45,26 +45,25 @@ public class MainView extends VerticalLayout {
 
         MyVerticalLayout buttonlines = new MyVerticalLayout();
 
-        Button btnClear = new Button("C", this::clickBtnClear);
-        Button btnDelete = new Button("<--", this::clickBtnDelete);
-//        MyButton btn = new MyButton("sdfg", this::clickBtn1);
-        Button btn1 = new Button("1", this::clickBtn1);
-        Button btn2 = new Button("2", this::clickBtn2);
-        Button btn3 = new Button("3", this::clickBtn3);
-        Button btn4 = new Button("4", this::clickBtn4);
-        Button btn5 = new Button("5", this::clickBtn5);
-        Button btn6 = new Button("6", this::clickBtn6);
-        Button btn7 = new Button("7", this::clickBtn7);
-        Button btn8 = new Button("8", this::clickBtn8);
-        Button btn9 = new Button("9", this::clickBtn9);
-        Button btn0 = new Button("0", this::clickBtn0);
-        Button btnNegative = new Button("+/-", this::clickBtnNegative);
-        Button btnComma = new Button(",", this::clickBtnComma);
-        Button btnPlus = new Button("+", this::clickBtnPlus);
-        Button btnMinus = new Button("-", this::clickBtnMinus);
-        Button btnTimes = new Button("x", this::clickBtnTimes);
-        Button btnThrough = new Button("/", this::clickBtnThrough);
-        Button btnEqual = new Button("=", this::clickBtnEqual);
+        MyButton btnClear = new MyButton("C", this::clickBtnClear);
+        MyButton btnDelete = new MyButton("<--", this::clickBtnDelete);
+        MyButton btn1 = new MyButton("1", this::clickBtn1);
+        MyButton btn2 = new MyButton("2", this::clickBtn2);
+        MyButton btn3 = new MyButton("3", this::clickBtn3);
+        MyButton btn4 = new MyButton("4", this::clickBtn4);
+        MyButton btn5 = new MyButton("5", this::clickBtn5);
+        MyButton btn6 = new MyButton("6", this::clickBtn6);
+        MyButton btn7 = new MyButton("7", this::clickBtn7);
+        MyButton btn8 = new MyButton("8", this::clickBtn8);
+        MyButton btn9 = new MyButton("9", this::clickBtn9);
+        MyButton btn0 = new MyButton("0", this::clickBtn0);
+        MyButton btnNegative = new MyButton("+/-", this::clickBtnNegative);
+        MyButton btnComma = new MyButton(",", this::clickBtnComma);
+        MyButton btnPlus = new MyButton("+", this::clickBtnPlus);
+        MyButton btnMinus = new MyButton("-", this::clickBtnMinus);
+        MyButton btnTimes = new MyButton("x", this::clickBtnTimes);
+        MyButton btnThrough = new MyButton("/", this::clickBtnThrough);
+        MyButton btnEqual = new MyButton("=", this::clickBtnEqual);
 
         MyHorizontalLayout row1 = new MyHorizontalLayout();
         MyHorizontalLayout row2 = new MyHorizontalLayout();
@@ -83,17 +82,21 @@ public class MainView extends VerticalLayout {
         row4.add(btn1, btn2, btn3, btnPlus);
         row5.add(btnNegative, btn0, btnComma, btnEqual);
     }
-
-    private void clickBtnClear(ClickEvent<Button> event) {
+    private void reset() {
         x = "";
         y = "";
+        operator = Operator.NO;
+    }
+
+    private void clickBtnClear(ClickEvent<Button> event) {
         lblResult.setText("");
+        reset();
     }
 
     private void clickBtnDelete(ClickEvent<Button> event) {
         x = x.substring(0, x.length() - 1);
 
-        if (y == "") {
+        if ("".equals(y)) {
             lblResult.setText(x);
         } else {
             switch (operator) {
@@ -115,8 +118,6 @@ public class MainView extends VerticalLayout {
                     break;
             }
         }
-        //Notification.show(x);
-        //Notification.show(y);
     }
 
     private void updateResult() {
@@ -242,6 +243,7 @@ public class MainView extends VerticalLayout {
         String finalResult = (Double.toString(result));
         finalResult = finalResult.replace('.', ',');
         lblResult.setText("" + finalResult);
+        reset();
 
     }
 

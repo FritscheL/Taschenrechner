@@ -18,11 +18,5 @@ public class MyHorizontalLayout extends HorizontalLayout {
         setMargin(true);
         setSpacing(true);
     }
-    
-    /*
-     * Das ist eine Demomethode
-     */
-    public void bla() {
-    }
 
 }
