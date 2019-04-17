@@ -34,6 +34,7 @@ public class MainView extends VerticalLayout {
     double result = 0;
     String x = "";
     String y = "";
+    String finalResult;
     Label lblResult = new Label("");
 
     public MainView() {
@@ -81,6 +82,7 @@ public class MainView extends VerticalLayout {
         row3.add(btn4, btn5, btn6, btnMinus);
         row4.add(btn1, btn2, btn3, btnPlus);
         row5.add(btnNegative, btn0, btnComma, btnEqual);
+
     }
 
     private void reset() {
@@ -239,11 +241,19 @@ public class MainView extends VerticalLayout {
                 break;
 
             case DIV:
-                result = calculationService.div(an, bn);
+                if (bn == 0) {
+                    Notification.show("Man kann nicht durch 0 dividieren!");
+                } else {
+                    result = calculationService.div(an, bn);
+                }
                 break;
         }
-        String finalResult = (Double.toString(result));
-        finalResult = finalResult.replace('.', ',');
+        if (bn == 0) {
+            finalResult = "Nicht lösbar!";
+        } else {
+            finalResult = (Double.toString(result));
+            finalResult = finalResult.replace('.', ',');
+        }
         lblResult.setText("" + finalResult);
         reset();
 
