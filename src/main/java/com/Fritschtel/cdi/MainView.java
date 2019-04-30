@@ -30,12 +30,17 @@ public class MainView extends VerticalLayout {
     private CalculationService calculationService;
 
     private Operator operator;
-
-    double result = 0;
-    String x = "";
-    String y = "";
-    String finalResult;
-    Label lblResult = new Label("");
+    private double result = 0;
+    private String x = "";
+    private String y = "";
+    private String finalResult;
+    
+    private Label lblResult = new Label("[...]");
+    private MyButton btnComma;
+    private MyButton btnPlus;
+    private MyButton btnMinus;
+    private MyButton btnTimes;
+    private MyButton btnThrough;
 
     public MainView() {
         setSizeUndefined();
@@ -59,12 +64,18 @@ public class MainView extends VerticalLayout {
         MyButton btn9 = new MyButton("9", this::clickBtn9);
         MyButton btn0 = new MyButton("0", this::clickBtn0);
         MyButton btnNegative = new MyButton("+/-", this::clickBtnNegative);
-        MyButton btnComma = new MyButton(",", this::clickBtnComma);
-        MyButton btnPlus = new MyButton("+", this::clickBtnPlus);
-        MyButton btnMinus = new MyButton("-", this::clickBtnMinus);
-        MyButton btnTimes = new MyButton("x", this::clickBtnTimes);
-        MyButton btnThrough = new MyButton("/", this::clickBtnThrough);
+        btnComma = new MyButton(",", this::clickBtnComma);
+        btnPlus = new MyButton("+", this::clickBtnPlus);
+        btnMinus = new MyButton("-", this::clickBtnMinus);
+        btnTimes = new MyButton("x", this::clickBtnTimes);
+        btnThrough = new MyButton("/", this::clickBtnThrough);
         MyButton btnEqual = new MyButton("=", this::clickBtnEqual);
+        
+        btnComma.setDisableOnClick(true);
+        btnPlus.setDisableOnClick(true);
+        btnMinus.setDisableOnClick(true);
+        btnTimes.setDisableOnClick(true);
+        btnThrough.setDisableOnClick(true);
 
         MyHorizontalLayout row1 = new MyHorizontalLayout();
         MyHorizontalLayout row2 = new MyHorizontalLayout();
@@ -95,10 +106,18 @@ public class MainView extends VerticalLayout {
         y = x;
         x = "";
     }
+    
+    private void operationEnabled() {
+        btnPlus.setEnabled(true);
+        btnMinus.setEnabled(true);
+        btnTimes.setEnabled(true);
+        btnThrough.setEnabled(true);
+    }
 
     private void clickBtnClear(ClickEvent<Button> event) {
-        lblResult.setText("");
+        lblResult.setText("[...]");
         reset();
+        btnComma.setEnabled(true);
     }
 
     private void clickBtnDelete(ClickEvent<Button> event) {
@@ -134,51 +153,61 @@ public class MainView extends VerticalLayout {
 
     private void clickBtn1(ClickEvent<Button> event) {
         x = x + "1";
+        operationEnabled();
         updateResult();
     }
 
     private void clickBtn2(ClickEvent<Button> event) {
         x = x + "2";
+        operationEnabled();
         updateResult();
     }
 
     private void clickBtn3(ClickEvent<Button> event) {
         x = x + "3";
+        operationEnabled();
         updateResult();
     }
 
     private void clickBtn4(ClickEvent<Button> event) {
         x = x + "4";
+        operationEnabled();
         updateResult();
     }
 
     private void clickBtn5(ClickEvent<Button> event) {
         x = x + "5";
+        operationEnabled();
         updateResult();
     }
 
     private void clickBtn6(ClickEvent<Button> event) {
         x = x + "6";
+        operationEnabled();
         updateResult();
     }
 
     private void clickBtn7(ClickEvent<Button> event) {
         x = x + "7";
+        operationEnabled();
         updateResult();
     }
 
     private void clickBtn8(ClickEvent<Button> event) {
         x = x + "8";
+        operationEnabled();
         updateResult();
     }
 
     private void clickBtn9(ClickEvent<Button> event) {
         x = x + "9";
+        operationEnabled();
         updateResult();
     }
 
     private void clickBtn0(ClickEvent<Button> event) {
         x = x + "0";
+        operationEnabled();
         updateResult();
     }
 
@@ -196,24 +225,28 @@ public class MainView extends VerticalLayout {
         varChange();
         operator = Operator.ADD;
         updateResult();
+        btnComma.setEnabled(true);
     }
 
     public void clickBtnMinus(ClickEvent<Button> event) {
         varChange();
         operator = Operator.SUB;
         updateResult();
+        btnComma.setEnabled(true);
     }
 
     public void clickBtnTimes(ClickEvent<Button> event) {
         varChange();
         operator = Operator.MULTI;
         updateResult();
+        btnComma.setEnabled(true);
     }
 
     public void clickBtnThrough(ClickEvent<Button> event) {
         varChange();
         operator = Operator.DIV;
         updateResult();
+        btnComma.setEnabled(true);
     }
 
     private void clickBtnEqual(ClickEvent<Button> event) {
