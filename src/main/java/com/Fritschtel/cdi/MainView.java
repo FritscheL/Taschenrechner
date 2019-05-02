@@ -41,6 +41,7 @@ public class MainView extends VerticalLayout {
     private MyButton btnMinus;
     private MyButton btnTimes;
     private MyButton btnThrough;
+    private MyButton btnNegative;
 
     public MainView() {
         setSizeUndefined();
@@ -63,7 +64,7 @@ public class MainView extends VerticalLayout {
         MyButton btn8 = new MyButton("8", this::clickBtn8);
         MyButton btn9 = new MyButton("9", this::clickBtn9);
         MyButton btn0 = new MyButton("0", this::clickBtn0);
-        MyButton btnNegative = new MyButton("+/-", this::clickBtnNegative);
+        btnNegative = new MyButton("+/-", this::clickBtnNegative);
         btnComma = new MyButton(",", this::clickBtnComma);
         btnPlus = new MyButton("+", this::clickBtnPlus);
         btnMinus = new MyButton("-", this::clickBtnMinus);
@@ -76,6 +77,7 @@ public class MainView extends VerticalLayout {
         btnMinus.setDisableOnClick(true);
         btnTimes.setDisableOnClick(true);
         btnThrough.setDisableOnClick(true);
+        btnNegative.setDisableOnClick(true);
 
         MyHorizontalLayout row1 = new MyHorizontalLayout();
         MyHorizontalLayout row2 = new MyHorizontalLayout();
@@ -112,6 +114,7 @@ public class MainView extends VerticalLayout {
         btnMinus.setEnabled(true);
         btnTimes.setEnabled(true);
         btnThrough.setEnabled(true);
+        btnNegative.setEnabled(true);
     }
 
     private void clickBtnClear(ClickEvent<Button> event) {
@@ -212,7 +215,7 @@ public class MainView extends VerticalLayout {
     }
 
     private void clickBtnNegative(ClickEvent<Button> event) {
-        x = x + "-";
+        x = "-" + x;
         updateResult();
     }
 
