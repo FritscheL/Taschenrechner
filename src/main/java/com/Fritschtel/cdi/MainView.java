@@ -3,6 +3,7 @@ package com.Fritschtel.cdi;
 import com.Fritschtel.cdi.component.MyButton;
 import com.Fritschtel.cdi.component.MyVerticalLayout;
 import com.Fritschtel.cdi.component.MyHorizontalLayout;
+import com.Fritschtel.cdi.component.MyLabel;
 import com.Fritschtel.cdi.enums.Operator;
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Operators;
 import com.vaadin.flow.component.ClickEvent;
@@ -34,14 +35,14 @@ public class MainView extends VerticalLayout {
     private String x = "";
     private String y = "";
     private String finalResult;
-    
-    private Label lblResult = new Label("[...]");
+    private boolean negBtnPressed = false;
+
+    private MyLabel lblResult = new MyLabel("");
     private MyButton btnComma;
     private MyButton btnPlus;
     private MyButton btnMinus;
     private MyButton btnTimes;
     private MyButton btnThrough;
-    private MyButton btnNegative;
 
     public MainView() {
         setSizeUndefined();
@@ -64,20 +65,19 @@ public class MainView extends VerticalLayout {
         MyButton btn8 = new MyButton("8", this::clickBtn8);
         MyButton btn9 = new MyButton("9", this::clickBtn9);
         MyButton btn0 = new MyButton("0", this::clickBtn0);
-        btnNegative = new MyButton("+/-", this::clickBtnNegative);
+        MyButton btnNegative = new MyButton("+/-", this::clickBtnNegative);
         btnComma = new MyButton(",", this::clickBtnComma);
         btnPlus = new MyButton("+", this::clickBtnPlus);
         btnMinus = new MyButton("-", this::clickBtnMinus);
         btnTimes = new MyButton("x", this::clickBtnTimes);
         btnThrough = new MyButton("/", this::clickBtnThrough);
         MyButton btnEqual = new MyButton("=", this::clickBtnEqual);
-        
+
         btnComma.setDisableOnClick(true);
         btnPlus.setDisableOnClick(true);
         btnMinus.setDisableOnClick(true);
         btnTimes.setDisableOnClick(true);
         btnThrough.setDisableOnClick(true);
-        btnNegative.setDisableOnClick(true);
 
         MyHorizontalLayout row1 = new MyHorizontalLayout();
         MyHorizontalLayout row2 = new MyHorizontalLayout();
@@ -108,50 +108,86 @@ public class MainView extends VerticalLayout {
         y = x;
         x = "";
     }
-    
+
+    private void switchOperator() {
+        double an = Double.parseDouble(y);
+        double bn = Double.parseDouble(x);
+
+        switch (operator) {
+            case NO:
+                Notification.show("Kein Operator ausgewählt!");
+                break;
+
+            case ADD:
+                result = calculationService.add(an, bn);
+                break;
+
+            case SUB:
+                result = calculationService.sub(an, bn);
+                break;
+
+            case MULTI:
+                result = calculationService.multi(an, bn);
+                break;
+
+            case DIV:
+                if (bn == 0) {
+                    Notification.show("Man kann nicht durch 0 dividieren!");
+                } else {
+                    result = calculationService.div(an, bn);
+                }
+                break;
+        }
+    }
+
     private void operationEnabled() {
         btnPlus.setEnabled(true);
         btnMinus.setEnabled(true);
         btnTimes.setEnabled(true);
         btnThrough.setEnabled(true);
-        btnNegative.setEnabled(true);
+    }
+
+    private void updateResult() {
+        lblResult.setText(y + operator + x);
     }
 
     private void clickBtnClear(ClickEvent<Button> event) {
-        lblResult.setText("[...]");
+        lblResult.setText("");
         reset();
         btnComma.setEnabled(true);
     }
 
     private void clickBtnDelete(ClickEvent<Button> event) {
-        x = x.substring(0, x.length() - 1);
-
-        if ("".equals(y)) {
-            lblResult.setText(x);
+        if ("".equals(x)) {
+            x = "";
         } else {
-            switch (operator) {
+            if (",".equals(x.substring(x.length() - 1, x.length()))) {
+                btnComma.setEnabled(true);
+            }
+            x = x.substring(0, x.length() - 1);
+            if ("".equals(y)) {
+                lblResult.setText(x);
+            } else {
+                switch (operator) {
 
-                case ADD:
-                    lblResult.setText(y + "+" + x);
-                    break;
+                    case ADD:
+                        lblResult.setText(y + "+" + x);
+                        break;
 
-                case SUB:
-                    lblResult.setText(y + "-" + x);
-                    break;
+                    case SUB:
+                        lblResult.setText(y + "-" + x);
+                        break;
 
-                case MULTI:
-                    lblResult.setText(y + "x" + x);
-                    break;
+                    case MULTI:
+                        lblResult.setText(y + "x" + x);
+                        break;
 
-                case DIV:
-                    lblResult.setText(y + "/" + x);
-                    break;
+                    case DIV:
+                        lblResult.setText(y + "/" + x);
+                        break;
+                }
             }
         }
-    }
-
-    private void updateResult() {
-        lblResult.setText(y + operator + x);
     }
 
     private void clickBtn1(ClickEvent<Button> event) {
@@ -215,41 +251,103 @@ public class MainView extends VerticalLayout {
     }
 
     private void clickBtnNegative(ClickEvent<Button> event) {
-        x = "-" + x;
+        if (negBtnPressed == true) {
+            x = x.substring(1, x.length());
+            negBtnPressed = false;
+        } else {
+            x = "-" + x;
+            negBtnPressed = true;
+        }
         updateResult();
     }
 
     private void clickBtnComma(ClickEvent<Button> event) {
-        x = x + ",";
+        if (x==""){
+            x = "0,";
+        } else {
+        x = x + ","; 
+        }
         updateResult();
     }
 
     public void clickBtnPlus(ClickEvent<Button> event) {
-        varChange();
+        if (x != "" && y != "") {
+            x = x.replace(',', '.');
+            y = y.replace(',', '.');
+            switchOperator();
+            y = (Double.toString(result));
+            y = y.replace('.', ',');
+            x = "";
+        }
+        if (y != "") {
+            x = "";
+        } else {
+            varChange();
+        }
         operator = Operator.ADD;
         updateResult();
         btnComma.setEnabled(true);
+        negBtnPressed = false;
     }
 
     public void clickBtnMinus(ClickEvent<Button> event) {
-        varChange();
+        if (x != "" && y != "") {
+            x = x.replace(',', '.');
+            y = y.replace(',', '.');
+            switchOperator();
+            y = (Double.toString(result));
+            y = y.replace('.', ',');
+            x = "";
+        }
+        if (y != "") {
+            x = "";
+        } else {
+            varChange();
+        }
         operator = Operator.SUB;
         updateResult();
         btnComma.setEnabled(true);
+        negBtnPressed = false;
     }
 
     public void clickBtnTimes(ClickEvent<Button> event) {
-        varChange();
+        if (x != "" && y != "") {
+            x = x.replace(',', '.');
+            y = y.replace(',', '.');
+            switchOperator();
+            y = (Double.toString(result));
+            y = y.replace('.', ',');
+            x = "";
+        }
+        if (y != "") {
+            x = "";
+        } else {
+            varChange();
+        }
         operator = Operator.MULTI;
         updateResult();
         btnComma.setEnabled(true);
+        negBtnPressed = false;
     }
 
     public void clickBtnThrough(ClickEvent<Button> event) {
-        varChange();
+        if (x != "" && y != "") {
+            x = x.replace(',', '.');
+            y = y.replace(',', '.');
+            switchOperator();
+            y = (Double.toString(result));
+            y = y.replace('.', ',');
+            x = "";
+        }
+        if (y != "") {
+            x = "";
+        } else {
+            varChange();
+        }
         operator = Operator.DIV;
         updateResult();
         btnComma.setEnabled(true);
+        negBtnPressed = false;
     }
 
     private void clickBtnEqual(ClickEvent<Button> event) {
@@ -278,20 +376,19 @@ public class MainView extends VerticalLayout {
 
             case DIV:
                 if (bn == 0) {
-                    Notification.show("Man kann nicht durch 0 dividieren!");
+                    lblResult.setText("Man kann nicht durch 0 dividieren!");
                 } else {
                     result = calculationService.div(an, bn);
                 }
                 break;
         }
-        if (bn == 0) {
-            finalResult = "Nicht lösbar!";
-        } else {
-            finalResult = (Double.toString(result));
-            finalResult = finalResult.replace('.', ',');
-        }
+        
+        finalResult = (Double.toString(result));
+        finalResult = finalResult.replace('.', ',');
         lblResult.setText("" + finalResult);
-        reset();
+        x = "";
+        y = finalResult;
+        negBtnPressed = false;
 
     }
 
