@@ -14,6 +14,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.BodySize;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
 
@@ -25,7 +26,7 @@ import javax.inject.Inject;
 @Route("")
 @StyleSheet("styles/styles.css")
 @PWA(name = "Project Base for Vaadin Flow with CDI", shortName = "Project Base")
-public class MainView extends VerticalLayout {
+public class MainView extends MyVerticalLayout {
 
     @Inject
     private CalculationService calculationService;
@@ -36,6 +37,7 @@ public class MainView extends VerticalLayout {
     private String y = "";
     private String finalResult;
     private boolean negBtnPressed = false;
+    private boolean through0 = false;
 
     private MyLabel lblResult = new MyLabel("");
     private MyButton btnComma;
@@ -88,8 +90,8 @@ public class MainView extends VerticalLayout {
         row1.setWidth("336px");
         row1.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
 
-        add(buttonlines);
-        buttonlines.add(row1, row2, row3, row4, row5);
+        //add(buttonlines);
+        add(row1, row2, row3, row4, row5);
         row1.add(btnClear, btnDelete, btnThrough);
         row2.add(btn7, btn8, btn9, btnTimes);
         row3.add(btn4, btn5, btn6, btnMinus);
@@ -376,18 +378,21 @@ public class MainView extends VerticalLayout {
 
             case DIV:
                 if (bn == 0) {
-                    lblResult.setText("Man kann nicht durch 0 dividieren!");
+                    through0 = true;
                 } else {
                     result = calculationService.div(an, bn);
                 }
                 break;
         }
-        
+        if (through0==true) {
+            lblResult.setText("Man kann nicht durch 0 dividieren!");
+        } else {
         finalResult = (Double.toString(result));
         finalResult = finalResult.replace('.', ',');
         lblResult.setText("" + finalResult);
         x = "";
         y = finalResult;
+        }
         negBtnPressed = false;
 
     }

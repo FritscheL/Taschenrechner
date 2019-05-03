@@ -10,8 +10,18 @@ and open the template in the editor.
 
 .main-view{
     border: 3px solid #9E9E9E;
-    width: 500px;
+    width: 400px;
 }
 .label-view{
-    height: 26px
+    height: 50px;
+    width: 100%;
+    text-align: right;
+    font-size: 22px;
+    padding: 32px;
+    box-sizing: border-box;
+}
+
+.line {
+    box-sizing: border-box;
+    align-self: center;
 }

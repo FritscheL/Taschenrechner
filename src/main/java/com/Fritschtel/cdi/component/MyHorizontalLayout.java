@@ -14,6 +14,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 public class MyHorizontalLayout extends HorizontalLayout {
 
     public MyHorizontalLayout() {
+        addClassName("line");
         setPadding(false);
         setMargin(true);
         setSpacing(true);
